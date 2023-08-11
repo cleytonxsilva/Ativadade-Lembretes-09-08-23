@@ -1,5 +1,6 @@
 package Main.main.Entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -14,6 +15,7 @@ public class Pessoa {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String nome;
-    @OneToMany
+    @OneToMany(mappedBy = "pessoa")
+    @JsonManagedReference
     private List<Lembrete>lembretes;
 }

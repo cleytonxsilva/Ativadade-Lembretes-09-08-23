@@ -1,5 +1,6 @@
 package Main.main.Entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -13,5 +14,9 @@ public class Lembrete {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String mensagem;
+    @ManyToOne
+    @JoinColumn(name = "fk_pessoa")
+    @JsonBackReference
+    private Pessoa pessoa;
 }
 
