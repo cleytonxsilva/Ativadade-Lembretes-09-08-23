@@ -14,5 +14,6 @@ public class Pessoa {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String nome;
+    @OneToMany
     private List<Lembrete>lembretes;
 }

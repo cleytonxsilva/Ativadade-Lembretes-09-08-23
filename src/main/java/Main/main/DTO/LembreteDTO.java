@@ -8,5 +8,5 @@ import lombok.Setter;
 public class LembreteDTO {
 
     private Long id;
-    private String alerta;
+    private String mensagem;
 }

@@ -12,6 +12,6 @@ public class Lembrete {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private String alerta;
+    private String mensagem;
 }
 
