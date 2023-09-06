@@ -1,16 +1,14 @@
 package Main.main.Service;
 
 
+import Main.main.DTO.PessoaDTO;
 import Main.main.Entity.Pessoa;
 import Main.main.Repository.PessoaRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.TransactionSystemException;
-import org.springframework.web.server.ResponseStatusException;
+import org.springframework.util.Assert;
 
 import java.util.List;
 
@@ -23,14 +21,44 @@ public class PessoaService {
             return pessoaRepository.findAll();
     }
 
-    @Transactional
-    public void cadastrar(Pessoa pessoa) {
+    public Pessoa findById(Long id) {
+        return this.pessoaRepository.findById(id).orElseThrow();
+    }
 
-        try{
-            pessoaRepository.save(pessoa);
-        }catch (DataIntegrityViolationException  e){
-            throw new RuntimeException (e) {
-            };
-        }
+    public Pessoa findByName(String nome) {
+        return this.pessoaRepository.findByName(nome);
+    }
+
+    @Transactional
+    public void create(PessoaDTO pessoaDTO) {
+        Assert.isTrue(!pessoaDTO.getNome().isBlank(), "Nome não pode ser nulo!");
+
+        pessoaRepository.save(this.toPessoa(pessoaDTO));
+    }
+
+    @Transactional
+    public void update(Long id, PessoaDTO pessoaDTO) {
+        PessoaDTO pessoaDatabase = toPessoaDTO(findById(id));
+        Assert.notNull(pessoaDatabase, "Pessoa não encontrado!");
+        Assert.isTrue(pessoaDatabase.getId().equals(pessoaDTO.getId()), "Pessoas não conferem!");
+        Assert.isTrue(!pessoaDTO.getNome().isBlank(), "Nome não pode ser nulo!");
+
+        pessoaRepository.save(toPessoa(pessoaDTO));
+    }
+
+    @Transactional
+    public void delete(Long id) {
+        PessoaDTO pessoaDTO = toPessoaDTO(findById(id));
+        Assert.notNull(pessoaDTO, "Pessoa não encontrada!");
+
+        pessoaRepository.delete(toPessoa(pessoaDTO));
+    }
+
+    public Pessoa toPessoa(PessoaDTO pessoaDTO) {
+        return new Pessoa(pessoaDTO.getId(), pessoaDTO.getNome());
+    }
+
+    public PessoaDTO toPessoaDTO(Pessoa pessoa) {
+        return new PessoaDTO(pessoa.getId(), pessoa.getNome());
     }
 }

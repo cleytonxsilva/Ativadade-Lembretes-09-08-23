@@ -1,5 +1,6 @@
 package Main.main.Controller;
 
+import Main.main.DTO.LembreteDTO;
 import Main.main.Entity.Lembrete;
 import Main.main.Service.LembreteService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,27 +9,60 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @RestController
 @RequestMapping("/lembretes")
 public class LembreteController {
     @Autowired
     private LembreteService lembreteService;
-//    @GetMapping
-//    public ResponseEntity<List<Lembrete>> findAll(){
-//        try{
-//            return ResponseEntity.ok(lembreteService.findAll());
-//        }catch (Exception e){
-//            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
-//        }
-//    }
 
-    @PostMapping("/cadastrar")
-    public ResponseEntity<String> cadastrar(@RequestBody Lembrete lembrete){
-        try{
-            lembreteService.cadastrar(lembrete);
+    @GetMapping
+    public ResponseEntity<Lembrete> findById(@RequestParam("id") final Long id) {
+        try {
+            return ResponseEntity.ok(lembreteService.findById(id));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(new Lembrete());
+        }
+    }
+
+    @GetMapping("/listAll")
+    public ResponseEntity<List<Lembrete>> findAllOfPessoa(@RequestParam("name") final String nome) {
+        try {
+            return ResponseEntity.ok(lembreteService.findAllOfPessoa(nome));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(new ArrayList<Lembrete>());
+        }
+    }
+
+    @PostMapping
+    public ResponseEntity<String> create(@RequestBody final LembreteDTO lembreteDTO) {
+        try {
+            lembreteService.create(lembreteDTO);
             return ResponseEntity.ok("Lembrete cadastrado com sucesso!");
-        }catch (Exception e){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PutMapping
+    public ResponseEntity<String> update(@RequestParam("id") final Long id, @RequestBody final LembreteDTO lembreteDTO) {
+        try {
+            lembreteService.update(id, lembreteDTO);
+            return ResponseEntity.ok("Lembrete editado com sucesso!");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @DeleteMapping
+    public ResponseEntity<String> delete(@RequestParam("id") final Long id) {
+        try {
+            lembreteService.delete(id);
+            return ResponseEntity.ok("Lembrete excluído com sucesso!");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 }

@@ -1,7 +1,9 @@
 package Main.main.DTO;
 
 import Main.main.Entity.Pessoa;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
@@ -11,4 +13,11 @@ public class LembreteDTO {
     private Long id;
     private String mensagem;
     private Pessoa pessoa;
+
+    public LembreteDTO(Long id, String mensagem, PessoaDTO pessoaDTO) {
+        this.id = id;
+        this.mensagem = mensagem;
+        this.pessoa = pessoa;
+    }
+    public LembreteDTO(){}
 }
