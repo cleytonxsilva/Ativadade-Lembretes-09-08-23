@@ -34,7 +34,7 @@ public class PessoaController {
     @GetMapping(params = "name")
     public ResponseEntity<Pessoa> findByName(@RequestParam("name") final String nome){
         try {
-            return ResponseEntity.ok(pessoaService.findByName(nome));
+            return ResponseEntity.ok(pessoaService.findByNome(nome).orElseThrow());
         }catch (Exception e) {
             return ResponseEntity.badRequest().body(new Pessoa());
         }

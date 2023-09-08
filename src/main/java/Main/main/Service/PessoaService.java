@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class PessoaService {
@@ -25,8 +26,8 @@ public class PessoaService {
         return this.pessoaRepository.findById(id).orElseThrow();
     }
 
-    public Pessoa findByName(String nome) {
-        return this.pessoaRepository.findByName(nome);
+    public Optional<Pessoa> findByNome(String nome) {
+        return this.pessoaRepository.findByNome(nome);
     }
 
     @Transactional

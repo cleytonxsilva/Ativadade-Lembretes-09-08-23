@@ -7,8 +7,11 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.junit.jupiter.api.Assertions;
+
 
 import java.util.Optional;
 
@@ -17,7 +20,9 @@ class LembreteApplicationTests {
 
 	@MockBean
 	PessoaRepository pessoaRepository;
-	private  final PessoaController pessoaController = new PessoaController();
+
+	@Autowired
+	private  PessoaController pessoaController;
 
 	@BeforeEach
 	void injectData(){
@@ -29,7 +34,10 @@ class LembreteApplicationTests {
 	@Test
 	@DisplayName("Caso de Uso FindById Classe Pessoa")
 	void testFindByIdPessoaTest(){
-
+		var controller = pessoaController.findById(1L);
+		Long id = controller.getBody().getId().longValue();
+		System.out.println(id);
+		Assertions.assertEquals(1L, id, 0);
 	}
 
 }

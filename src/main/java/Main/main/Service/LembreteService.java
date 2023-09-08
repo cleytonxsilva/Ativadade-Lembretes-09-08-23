@@ -30,7 +30,7 @@ public class LembreteService {
     }
 
     public List<Lembrete> findAllOfPessoa(final String nome) {
-        return this.lembreteRepository.findByPessoa(pessoaService.findByName(nome).getId());
+        return this.lembreteRepository.findByPessoaId(pessoaService.findByNome(nome).get().getId());
     }
 
     @Transactional
